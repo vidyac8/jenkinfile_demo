@@ -1,15 +1,30 @@
-pipeline{
-    agent any 
-	stages{
-	stage("compile"){
-		steps{
-		sh "mvn compile"
-		}
+pipeline {
+	agent any
+	tools {
+    	maven 'my_mvn'
 	}
-	stage("unit test"){
-                steps{
-                sh "mvn test"
-                }
-        }
-	}
+	stages {
+    	stage("Checkout") {   
+        	steps {               	 
+            	git branch: 'git branch: 'main', url: 'https://github.com/vidyac8/jenkinfile_demo.git'        	 
+           	 
+        	}    
+    	}
+    	stage('clean') {
+        	steps {
+        	sh "mvn clean"  	 
+        	}
+    	}
+    	stage('Build') {
+        	steps {
+        	sh "mvn compile"  	 
+        	}
+    	}
+   	 
+    	stage("Unit test") {          	 
+        	steps {  	 
+            	sh "mvn test"          	 
+       	}
+}
+}
 }
